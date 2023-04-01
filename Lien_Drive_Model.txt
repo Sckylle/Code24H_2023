@@ -1,1 +1,24 @@
 https://drive.google.com/file/d/19_20RZgwLidd2glXrQi76xg3aZ0mcZm_/view?usp=share_link
+
+
+def predictionImage(imagePath,model):
+  import matplotlib.pyplot as plt
+  import matplotlib.image as mpimg
+  from keras.models import load_model
+  from PIL import Image
+  import keras.utils as image
+  import numpy as np
+  model = load_model(model)
+  imagee = image.load_img(imagePath, target_size=(224, 224))
+  x = image.img_to_array(imagee)
+  x = np.expand_dims(x, axis=0)
+  x = tf.keras.applications.mobilenet.preprocess_input(x)
+  preds = model.predict(x)
+  predicted_classes = preds.argmax(axis=1)
+  labels = {0: 'Image à exclure', 1: 'Image à retoucher', 2: 'Image parfaite'}
+  predicted_labels = [labels[i] for i in predicted_classes]
+  imgplot = plt.imshow(imagee)
+  imgplt = plt.axis('off')
+  imgplt = plt.title(predicted_labels)
+
+  return plt.show()
